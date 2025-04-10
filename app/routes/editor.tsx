@@ -1,24 +1,27 @@
 import { LoaderFunctionArgs, redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData } from "@remix-run/react";
 import { Button, Card, TextField, Badge } from "ui";
 import { FileDrop } from "~/components/file-drop";
-import { getSessionMetadata, isSessionRedirect } from "~/sessions.server";
+import { getEpub } from "~/sessions/epub.sessions.server";
+import { isSessionHeaders } from "~/sessions/sessions.server";
+import { parseEpub } from "~/utils/epub.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const result = await getSessionMetadata(request);
-
-  if (isSessionRedirect(result)) {
+  const result = await getEpub(request);
+  if (isSessionHeaders(result)) {
     return redirect("/", result);
   }
 
-  return result;
+  const metadata = await parseEpub(result);
+
+  return metadata;
 };
 
-export default function DetailsPage() {
+export default function EditorPage() {
   const { title, author, subjects, coverUrl } = useLoaderData<typeof loader>();
 
   return (
-    <form method="post" action="/save">
+    <Form method="post" action="/editor/save" encType="multipart/form-data">
       <Card className="mx-auto w-full">
         <Card.Header>
           <Card.Title>Edit EPUB</Card.Title>
@@ -51,6 +54,6 @@ export default function DetailsPage() {
           <Button type="submit">Save changes</Button>
         </Card.Footer>
       </Card>
-    </form>
+    </Form>
   );
 }

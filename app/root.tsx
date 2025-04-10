@@ -9,6 +9,7 @@ import {
 } from "@remix-run/react";
 import {
   PreventFlashOnWrongTheme,
+  Theme,
   ThemeProvider,
   useTheme,
 } from "remix-themes";
@@ -16,7 +17,7 @@ import { Toast } from "ui";
 import { AppNavbar } from "~/app-navbar";
 import { Footer } from "~/components/footer";
 import stylesheet from "~/tailwind.css?url";
-import { themeSessionResolver } from "./sessions.server";
+import { themeSessionResolver } from "./sessions/sessions.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const { getTheme } = await themeSessionResolver(request);
@@ -61,8 +62,8 @@ function RootLayout({
   return (
     <html
       lang="en"
-      data-theme={currentTheme ?? theme ?? ""}
-      className={currentTheme ?? theme ?? ""}
+      data-theme={currentTheme ?? theme ?? Theme.LIGHT}
+      className={currentTheme ?? theme ?? Theme.LIGHT}
     >
       <head>
         <meta charSet="utf-8" />

@@ -2,11 +2,9 @@
 import JSZip from "jszip";
 import { XMLBuilder, XMLParser } from "fast-xml-parser";
 
-export type EpubMetadata = {
+export type StoreKey = {
+  storeId: string;
   title: string;
-  author: string;
-  subjects: string[];
-  coverUrl: string | undefined;
 };
 
 async function getEpubOPFAndZip(epubFile: File) {
@@ -111,7 +109,7 @@ async function getEpubCover(zip: JSZip, opf: any, opfPath: any, metadata: any) {
     } else {
       const coverItem = manifest.find(
         (item: any) =>
-          /cover.*\.(jpg|jpeg|png|svg)/i.test(item?.["@_href"]) ||
+          /cover.*\.(jpg|jpeg|png)/i.test(item?.["@_href"]) ||
           item?.["@_properties"] === "cover-image"
       );
       coverHref = coverItem?.["@_href"];
@@ -134,8 +132,6 @@ async function getEpubCover(zip: JSZip, opf: any, opfPath: any, metadata: any) {
 
     if (fileExtension === "png") {
       mimeType = "image/png";
-    } else if (fileExtension === "gif") {
-      mimeType = "image/gif";
     }
 
     return `data:${mimeType};base64,${coverFile}`;
@@ -145,10 +141,10 @@ async function getEpubCover(zip: JSZip, opf: any, opfPath: any, metadata: any) {
   }
 }
 
-export async function writeEpub(
-  title: string | FormDataEntryValue | null,
-  author: string | FormDataEntryValue | null,
-  cover: FormDataEntryValue | null,
+export async function editEpub(
+  title: string,
+  author: string,
+  cover: File,
   epub: File
 ): Promise<File> {
   const { zip, opf, opfPath } = await getEpubOPFAndZip(epub);
@@ -198,15 +194,10 @@ export async function writeEpub(
   zip.file(opfPath, newOpfXml);
 
   const updatedEpubBuffer = await zip.generateAsync({ type: "uint8array" });
-  const file = new File(
-    [updatedEpubBuffer],
-    "updated.epub", // You can customize this name
-    {
-      type: "application/epub+zip",
-      lastModified: Date.now(),
-    }
-  );
-  return file;
+  return new File([updatedEpubBuffer], `${title}.epub`, {
+    type: "application/epub+zip",
+    lastModified: Date.now(),
+  });
 }
 
 function resolveRelativePath(opfPath: any, relativePath: any) {

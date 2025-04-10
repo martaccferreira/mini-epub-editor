@@ -7,7 +7,7 @@ import { Container } from "~/components/ui";
 export const meta: MetaFunction = () => {
   return [
     {
-      title: "Justd Starter Kit with Remix",
+      title: "Minimalistic EPUB Editor",
     },
     {
       name: "description",
@@ -17,7 +17,7 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export default function Index() {
+export default function UploadPage() {
   const fetcher = useFetcher();
 
   const handleSubmit = async (file: File) => {
@@ -27,7 +27,7 @@ export default function Index() {
     fetcher.submit(formData, {
       method: "POST",
       encType: "multipart/form-data",
-      action: "/details",
+      action: "/upload",
     });
   };
 
@@ -38,14 +38,14 @@ export default function Index() {
   return (
     <>
       <Header
-        title="Justd Starter Kit"
-        description="Remix Starter Kit with Tailwind CSS, TypeScript, React, React Aria Components, Justd Components, Framer Motion, and more."
+        title={"The Minimalistic EPUB Editor"}
+        description={"Fix your EPUB metadata and cover image in simple steps."}
       />
       <Container>
         <fetcher.Form
           method="post"
           encType="multipart/form-data"
-          action="/details"
+          action={"/upload"}
         >
           <FileDrop
             title="Upload an EPUB"

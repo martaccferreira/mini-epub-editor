@@ -24,3 +24,4 @@ export * from "./visually-hidden";
 export * from "./drop-zone";
 export * from "./file-trigger";
 export * from "./badge";
+export * from "./progress-circle";

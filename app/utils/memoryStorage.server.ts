@@ -1,15 +1,20 @@
 type MemoryEpubStore = Map<string, File>;
 
+export type StoreKey = {
+  storeId: string;
+  title: string;
+};
+
 const epubStore: MemoryEpubStore = new Map();
 
-export function storeEpub(sessionId: string, file: File) {
-  epubStore.set(sessionId, file);
+export function storeEbook(storeId: string, file: File) {
+  epubStore.set(storeId, file);
 }
 
-export function getStoredEpub(sessionId: string): File | undefined {
-  return epubStore.get(sessionId);
+export function getStoredEbook(storeId: string): File | undefined {
+  return epubStore.get(storeId);
 }
 
-export function deleteStoredEpub(sessionId: string) {
-  epubStore.delete(sessionId);
+export function deleteStoredEbook(storeId: string): boolean {
+  return epubStore.delete(storeId);
 }
