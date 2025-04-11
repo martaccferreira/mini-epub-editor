@@ -1,6 +1,7 @@
-import { IconBrandGithub, IconBrandJustd } from "justd-icons";
+import { IconBrandGithub } from "justd-icons";
 import { Link, Navbar, Separator, buttonStyles } from "ui";
 import { ThemeSwitcher } from "~/components/theme-switcher";
+import icon from "/favicon.ico?url";
 
 const navigations = [
   {
@@ -13,8 +14,8 @@ export function AppNavbar() {
   return (
     <Navbar>
       <Navbar.Nav>
-        <Navbar.Logo href="/epub">
-          <IconBrandJustd />
+        <Navbar.Logo href="/">
+          <img alt="app icon" src={icon} width="25" height="25" />
         </Navbar.Logo>
         <Navbar.Section>
           {navigations.map((item) => (
@@ -30,7 +31,7 @@ export function AppNavbar() {
               intent: "outline",
               size: "square-petite",
             })}
-            href="https://github.com/justdlabs/remix"
+            href="https://github.com/martaccferreira/mini-epub-editor"
             target="_blank"
             aria-label="Go to Github Repo"
           >
@@ -44,7 +45,7 @@ export function AppNavbar() {
           <Navbar.Trigger className="-ml-2" />
           <Separator orientation="vertical" className="h-6" />
           <Navbar.Logo href="/">
-            <IconBrandJustd />
+            <img alt="app icon" src={icon} width="25" height="25" />
           </Navbar.Logo>
         </Navbar.Flex>
         <Navbar.Flex className="gap-x-1">
@@ -54,7 +55,7 @@ export function AppNavbar() {
               intent: "outline",
               size: "square-petite",
             })}
-            href="https://github.com/justdlabs/remix"
+            href="https://github.com/martaccferreira/mini-epub-editor"
             target="_blank"
             aria-label="Go to Github Repo"
           >

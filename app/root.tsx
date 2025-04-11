@@ -21,7 +21,7 @@ import { themeSessionResolver } from "./sessions/sessions.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const { getTheme } = await themeSessionResolver(request);
-  return { theme: getTheme() };
+  return { theme: getTheme() ?? Theme.LIGHT };
 }
 
 export const links: LinksFunction = () => [
@@ -62,8 +62,8 @@ function RootLayout({
   return (
     <html
       lang="en"
-      data-theme={currentTheme ?? theme ?? Theme.LIGHT}
-      className={currentTheme ?? theme ?? Theme.LIGHT}
+      data-theme={currentTheme ?? theme ?? ""}
+      className={currentTheme ?? theme ?? ""}
     >
       <head>
         <meta charSet="utf-8" />

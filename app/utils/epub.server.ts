@@ -41,7 +41,6 @@ export async function parseEpub(epubFile: File) {
   const { opf, opfPath, zip } = await getEpubOPFAndZip(epubFile);
 
   const metadata = opf?.package?.metadata;
-  console.log(metadata);
 
   const title = metadata?.["dc:title"] ?? "";
 
@@ -72,8 +71,6 @@ export async function parseEpub(epubFile: File) {
   } else {
     console.log("No cover found.");
   }
-
-  console.log("coverBase", coverBase64);
 
   return {
     title,
@@ -114,7 +111,6 @@ async function getEpubCover(zip: JSZip, opf: any, opfPath: any, metadata: any) {
       );
       coverHref = coverItem?.["@_href"];
     }
-    console.log(manifest);
 
     if (!coverHref) {
       return undefined; // No cover found
@@ -137,7 +133,7 @@ async function getEpubCover(zip: JSZip, opf: any, opfPath: any, metadata: any) {
     return `data:${mimeType};base64,${coverFile}`;
   } catch (error) {
     console.error("Error getting cover:", error);
-    return undefined; // Handle errors gracefully
+    return undefined;
   }
 }
 

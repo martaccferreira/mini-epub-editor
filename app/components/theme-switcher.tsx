@@ -19,7 +19,7 @@ export function ThemeSwitcher() {
       aria-label="Switch theme"
       onPress={switchTheme}
     >
-      {Theme.DARK === theme ? <IconMoon /> : <IconSun />}
+      {Theme.LIGHT === theme ? <IconSun /> : <IconMoon />}
     </Button>
   );
 }

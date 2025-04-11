@@ -28,9 +28,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     );
   }
 
-  console.log(title, author);
-  console.log(cover);
-
   // get old epub
   const epub = await getEpub(request);
   if (isSessionHeaders(epub)) {

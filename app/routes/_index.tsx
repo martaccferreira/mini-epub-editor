@@ -1,8 +1,11 @@
-import type { MetaFunction } from "@remix-run/node";
-import { useFetcher } from "@remix-run/react";
+import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import { useFetcher, useLoaderData } from "@remix-run/react";
+import { useEffect } from "react";
+import { toast } from "sonner";
 import { FileDrop } from "~/components/file-drop";
 import { Header } from "~/components/header";
 import { Container } from "~/components/ui";
+import { sessionStorage } from "~/sessions/sessions.server";
 
 export const meta: MetaFunction = () => {
   return [
@@ -12,13 +15,36 @@ export const meta: MetaFunction = () => {
     {
       name: "description",
       content:
-        "Remix Starter Kit with Tailwind CSS, TypeScript, React, React Aria Components, Justd Components, Framer Motion, and more.",
+        "EPUB Editor: drop your epub and change it's author, title and cover at will!",
     },
   ];
 };
 
+export async function loader({ request }: LoaderFunctionArgs) {
+  const session = await sessionStorage.getSession(
+    request.headers.get("Cookie")
+  );
+
+  const message = session.get("error") ?? "";
+  return Response.json(
+    { message },
+    {
+      headers: {
+        "Set-Cookie": await sessionStorage.commitSession(session),
+      },
+    }
+  );
+}
+
 export default function UploadPage() {
   const fetcher = useFetcher();
+  const { message } = useLoaderData<typeof loader>();
+
+  useEffect(() => {
+    if (message) {
+      toast.error(message, { position: "top-center" });
+    }
+  });
 
   const handleSubmit = async (file: File) => {
     const formData = new FormData();

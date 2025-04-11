@@ -22,7 +22,7 @@ export async function editSessionInfo(
   title?: string
 ): Promise<boolean> {
   if (!session.has(sessionKey)) {
-    session.flash("error", "No session key found. Defaulting to old title.");
+    session.flash("error", "An error occurred. Please try again.");
     return false;
   }
   const metadata: StoreKey = session.get(sessionKey);
@@ -39,7 +39,7 @@ export async function getSessionInfo(
   sessionKey: string
 ): Promise<StoreKey | undefined> {
   if (!session.has(sessionKey)) {
-    session.flash("error", "No session key found.");
+    session.flash("error", "An error occurred. Please try again.");
     return;
   }
 
