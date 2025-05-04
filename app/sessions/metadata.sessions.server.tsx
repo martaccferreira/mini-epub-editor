@@ -2,7 +2,6 @@ import { StoreKey } from "~/utils/memoryStorage.server";
 import { Session, SessionData } from "@remix-run/node";
 
 export const EPUB_SESSION_KEY = "epubStoreKey";
-export const AZW3_SESSION_KEY = "azw3StoreKey";
 
 export async function writeSessionInfo(
   session: Session<SessionData, SessionData>,
@@ -22,7 +21,6 @@ export async function editSessionInfo(
   title?: string
 ): Promise<boolean> {
   if (!session.has(sessionKey)) {
-    session.flash("error", "An error occurred. Please try again.");
     return false;
   }
   const metadata: StoreKey = session.get(sessionKey);
@@ -39,7 +37,6 @@ export async function getSessionInfo(
   sessionKey: string
 ): Promise<StoreKey | undefined> {
   if (!session.has(sessionKey)) {
-    session.flash("error", "An error occurred. Please try again.");
     return;
   }
 

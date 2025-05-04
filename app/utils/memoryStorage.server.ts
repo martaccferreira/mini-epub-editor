@@ -8,6 +8,7 @@ export type StoreKey = {
 const epubStore: MemoryEpubStore = new Map();
 
 export function storeEbook(storeId: string, file: File) {
+  console.log(epubStore);
   epubStore.set(storeId, file);
 }
 

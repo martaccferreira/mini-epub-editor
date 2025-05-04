@@ -26,7 +26,7 @@ export default function EditorPage() {
         <Card.Header>
           <Card.Title>Edit EPUB</Card.Title>
           <Card.Description>
-            Don't loose the level, just keep on going.
+            Featuring the subject tags, just for your amusement
           </Card.Description>
         </Card.Header>
 

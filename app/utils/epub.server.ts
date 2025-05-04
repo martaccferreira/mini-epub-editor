@@ -92,9 +92,9 @@ async function getEpubCover(zip: JSZip, opf: any, opfPath: any, metadata: any) {
       metaArray = [metadata.meta];
     }
 
-    const coverIdMeta = metadata?.meta?.find(
-      (m: any) => m?.["@_name"] === "cover"
-    )?.["@_content"];
+    const coverIdMeta = metaArray.find((m: any) => m?.["@_name"] === "cover")?.[
+      "@_content"
+    ];
 
     if (coverIdMeta) {
       const coverItem = manifest.find(
@@ -180,9 +180,14 @@ export async function editEpub(
     opf.package.manifest.item = manifest;
 
     // Add meta to metadata
-    const meta = metadata.meta || [];
-    meta.push({ "@_name": "cover", "@_content": coverId });
-    metadata.meta = meta;
+    let metaArray = [];
+    if (Array.isArray(metadata?.meta)) {
+      metaArray = metadata.meta;
+    } else if (metadata?.meta) {
+      metaArray = [metadata.meta];
+    }
+    metaArray.push({ "@_name": "cover", "@_content": coverId });
+    metadata.meta = metaArray;
   }
 
   // Rebuild OPF and write back

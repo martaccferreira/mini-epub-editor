@@ -44,7 +44,7 @@ export default function UploadPage() {
     if (message) {
       toast.error(message, { position: "top-center" });
     }
-  });
+  }, []);
 
   const handleSubmit = async (file: File) => {
     const formData = new FormData();

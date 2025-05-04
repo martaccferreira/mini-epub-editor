@@ -1,7 +1,7 @@
 import { LoaderFunctionArgs, redirect } from "@remix-run/node";
-import { useFetcher, useLoaderData } from "@remix-run/react";
+import { useLoaderData, Form } from "@remix-run/react";
 import { IconArrowWallDown, IconCircleCheck } from "justd-icons";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Card, ProgressCircle } from "~/components/ui";
 import { getEpubTitle } from "~/sessions/epub.sessions.server";
 import { isSessionHeaders } from "~/sessions/sessions.server";
@@ -19,34 +19,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export default function SavePage() {
   const { title } = useLoaderData<typeof loader>();
-  const fetcher = useFetcher();
 
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
-  const [countdown, setCountdown] = useState(30);
-
-  useEffect(() => {
-    if (!downloaded) return;
-
-    const timer = setInterval(() => {
-      setCountdown((c) => {
-        if (c === 1) {
-          clearInterval(timer);
-          ebookClear();
-        }
-        return c - 1;
-      });
-    }, 3000);
-
-    return () => clearInterval(timer);
-  }, [downloaded]);
-
-  const ebookClear = () => {
-    fetcher.submit(null, {
-      method: "post",
-      action: "/download/clear",
-    });
-  };
 
   const triggerDownload = async () => {
     setIsDownloading(true);
@@ -54,7 +29,6 @@ export default function SavePage() {
     // start file download
     const res = await fetch(`/download/${format}`);
     if (res.status === 404) {
-      // toater error
       return;
     }
     const blob = await res.blob();
@@ -70,7 +44,7 @@ export default function SavePage() {
   };
 
   const sendToKindle = () => {
-    triggerDownload();
+    if (!downloaded) triggerDownload();
     window.open("https://www.amazon.com/sendtokindle", "_blank");
   };
 
@@ -86,7 +60,7 @@ export default function SavePage() {
         <Button
           className={"w-full"}
           onPress={triggerDownload}
-          isDisabled={isDownloading}
+          isDisabled={isDownloading || downloaded}
           size="large"
         >
           <>
@@ -108,22 +82,22 @@ export default function SavePage() {
           Send to Kindle
         </Button>
         {downloaded && (
-          <Button
-            intent="outline"
-            onPress={ebookClear}
-            className={"w-full"}
-            size="large"
-          >
-            Edit new EPUB
-          </Button>
+          <Form method="post" action="/download/clear" className="w-full">
+            <Button
+              type="submit"
+              intent="outline"
+              className={"w-full"}
+              size="large"
+            >
+              Edit new EPUB
+            </Button>
+          </Form>
         )}
       </Card.Content>
 
       <Card.Footer>
         <Card.Description>
-          {!downloaded
-            ? `Click the button to download your ${format.toUpperCase()} file.`
-            : `File will be deleted in ${countdown}s`}
+          {`Click the button to download your ${format.toUpperCase()} file.`}
         </Card.Description>
       </Card.Footer>
     </Card>

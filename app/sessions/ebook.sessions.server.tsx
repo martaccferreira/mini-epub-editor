@@ -26,6 +26,7 @@ export async function getEbook(
   const sessionInfo = await getSessionInfo(session, key);
   if (!sessionInfo) {
     console.error(`getEbook: no ${key} session info found`);
+    session.flash("error", "Ebook info not found. Please try again.");
     return {
       headers: {
         "Set-Cookie": await sessionStorage.commitSession(session),
@@ -87,6 +88,7 @@ export async function clearEbook(
   const sessionInfo = await getSessionInfo(session, key);
   if (!sessionInfo) {
     console.error(`clearEbook: no ${key} session info found`);
+    session.flash("error", "Could not delete ebook: info not found.");
     return {
       headers: {
         "Set-Cookie": await sessionStorage.commitSession(session),
@@ -119,6 +121,7 @@ export async function getEbookTitle(
   const sessionInfo = await getSessionInfo(session, key);
   if (!sessionInfo) {
     console.error(`getEbookTitle: no ${key} session info found`);
+    session.flash("error", "Could not get ebook title: info not found.");
     return {
       headers: {
         "Set-Cookie": await sessionStorage.commitSession(session),

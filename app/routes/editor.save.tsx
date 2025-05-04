@@ -41,5 +41,5 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   // save the updated epub to storage
   const sessionHeader = await writeEpub(request, alteredEpub);
 
-  return redirect(`/download?target=epub`, sessionHeader);
+  return redirect(`/download`, sessionHeader);
 };
