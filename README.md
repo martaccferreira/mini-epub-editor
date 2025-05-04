@@ -28,7 +28,7 @@ Supports both **Light** and **Dark** modes.
 
 ---
 
-## Requirements
+## ✅ Requirements
 
 - Node.js version 18 **or higher**
 - npm (comes with Node.js)
