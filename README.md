@@ -1,12 +1,12 @@
 # 📚 Mini EPUB Editor
 
-A minimal web-based EPUB metadata editor built with [Remix](https://remix.run) and [JustD UI](https://justd.dev). This app allows users to upload EPUB files, edit metadata, and download the updated file.
+A minimal web-based EPUB metadata editor built with [Remix](https://remix.run) and [Intent UI](https://intentui.com/). This app allows users to upload EPUB files, edit metadata, and download the updated file.
 
 ## ✨ Features
 
 - 🖊️ Edit EPUB metadata: **Title**, **Author**, and **Cover image**
 
-- ⚡ Fast, client-friendly UI built with JustD
+- ⚡ Fast, client-friendly UI built with Intent UI
 
 - 📤 One-click **"Send to Kindle"** opens Amazon’s upload page so you can drag and drop your edited EPUB and send it directly to your Kindle
 
